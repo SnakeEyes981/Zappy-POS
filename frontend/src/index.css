@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .input-group {
+        @apply flex flex-col gap-y-2
+    }
+    .input-label {
+        @apply font-bold px-2 text-stone-900
+    }
+    .input-field {
+        @apply font-bold rounded-md border-2 border-teal-300 py-1 px-4 focus:border-teal-400 outline-0 transition
+    }
+}
