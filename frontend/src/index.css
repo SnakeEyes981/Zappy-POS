@@ -7,9 +7,9 @@
         @apply flex flex-col gap-y-2
     }
     .input-label {
-        @apply font-bold px-2 text-stone-900
+        @apply font-bold px-2 text-stone-900 text-xl
     }
     .input-field {
-        @apply font-bold rounded-md border-2 border-teal-300 py-1 px-4 focus:border-teal-400 outline-0 transition
+        @apply font-bold rounded-full text-xl text-black border-2 border-white focus:border-black py-2 px-4 outline-0 transition duration-300 bg-transparent placeholder:text-white
     }
 }
