@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +11,6 @@
         @apply font-bold px-2 text-stone-900 text-xl
     }
     .input-field {
-        @apply font-bold rounded-full text-xl text-black border-2 border-white focus:border-black py-2 px-4 outline-0 transition duration-300 bg-transparent placeholder:text-white
+        @apply rounded-full text-sm sm:text-xl font-medium text-black border-2 border-white focus:border-black py-1 sm:py-2 px-4 outline-0 transition duration-300 bg-transparent placeholder:text-white
     }
 }
