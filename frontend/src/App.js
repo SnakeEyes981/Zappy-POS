@@ -1,7 +1,7 @@
-import Login from "./pages/login";
+import Routes from "./routes/routes";
 function App() {
   return (
-    <Login />
+    <Routes />
   )
 }
 
