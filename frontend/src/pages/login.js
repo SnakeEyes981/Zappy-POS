@@ -1,10 +1,10 @@
 export default function login() {
     return (
         <>
-          <div className="font-nunito bg-gradient-to-tl from-teal-400 to-yellow-200 flex justify-center items-center sm:min-h-screen min-h-dvh sm:p-0 px-8 w-full">
+          <div className="font-nunito bg-cyan-400 flex justify-center items-center sm:min-h-screen min-h-dvh sm:p-0 px-8 w-full">
               <section className="bg-transparent rounded-md flex flex-col justify-center items-center overflow-hidden shadow-md">
                   <div className="imageSection border-b-4 w-full border-stone-900 rounded-2xl sm:py-6 sm:px-12 p-4">
-                      <h1 className="text-white uppercase text-center font-black sm:text-3xl text-xl text-nowrap">Zappy POS Terminal</h1>
+                      <h1 className="text-white uppercase text-center font-black sm:text-3xl text-xl text-nowrap">Zappy POS<span className="text-black"> Terminal</span></h1>
                   </div>
                   <div className="form w-full px-2 sm:px-8 md:py-12 py-8">
                       <div className="input-group">

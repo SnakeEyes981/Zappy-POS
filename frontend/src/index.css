@@ -16,10 +16,32 @@
     .navbarLink {
         @apply hover:bg-sky-300 hover:text-stone-800 transition rounded-md text-center sm:rounded-full py-0 px-6 text-sky-300 py-1
     }
+    .navbarLinkActive {
+        @apply hover:bg-sky-300 hover:text-stone-800 transition rounded-md text-center sm:rounded-full py-0 px-6 text-sky-300 py-1 bg-sky-300 text-stone-900
+    }
 }
 
 .background-image {
     background-image: url("./assets/home-bg-pattern.svg");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
+
 }
+
+
+/* Scroll Bar */
+
+::-webkit-scrollbar {
+    width: 4px;   /* Horizontal scrollbar thickness */
+    height: 4px;  /* Vertical scrollbar thickness */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #f1f1f1;  /* Scrollbar color */
+    border-radius: 999px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;  /* Scrollbar track color */
+  }
