@@ -1,8 +1,8 @@
 export default function orderCard(params) {
     return (
         <>
-        <div className="order-card basis-1/4 rounded-xl bg-white p-4 md:shrink-0">
-            <div className="flex flex-col items-center gap-y-2">
+        <div className="order-card basis-1/4 rounded-xl bg-white/85 hover:bg-white transition p-4 md:shrink-0">
+            <div className="flex flex-col items-center gap-y-4">
                 <div className="flex justify-between items-center w-full sm:flex-row flex-col">
                     <h3 className="customerName font-bold">Mark Anthony</h3>
                     <p className="orderId text-gray-800 text-sm">#41249821</p>
