@@ -57,7 +57,7 @@ border-radius: 999px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-background: lightgray;  /* Scrollbar track color */
+background: transparent;  /* Scrollbar track color */
 }
 
 .noscroll-bar::-webkit-scrollbar {
