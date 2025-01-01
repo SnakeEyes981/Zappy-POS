@@ -6,7 +6,7 @@ export default function home(params) {
             <div className="navbar bg-transparent">
                 <Navbar role = 'admin'/>
             </div>
-            <div className="menu bg-gradient-to-tr from-teal-400 to-yellow-200 w-full p-2 sm:p-5 rounded-xl md:gap-x-5 md:gap-y-0 gap-y-8">
+            <div className="menu bg-gradient-to-tr from-teal-400 to-yellow-200 w-full p-2 rounded-xl">
                 <Kitchen />
             </div>
         </main>
