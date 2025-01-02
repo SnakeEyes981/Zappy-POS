@@ -6,17 +6,17 @@ export default function Kitchen(params) {
     const [viewOrderId, setOrderId] = useState(null)
 
     const ordersDetails = [
-        {orderId: 1001, status: 'Completed', type: 'take away', table: 'null', time: '01:30 pm', items: [
+        {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time: '01:30 pm', items: [
             {name : 'grilled cheese burger', quantity: 3},
             {name : 'chicken patti burger', quantity: 4},
             {name : 'fries', quantity: 5}
         ]},
-        {orderId: 1002, status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
+        {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
             {name : 'chicken fajita pizza', quantity: 1},
             {name : 'cheese sandwich', quantity: 3},
             {name : 'diet coke', quantity: 2}
         ]},
-        {orderId: 1003, status: 'Pending', type: 'delivery', table: 'null', time: '02:10 pm', items: [
+        {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time: '02:10 pm', items: [
             {name : 'lotus pie', quantity: 3},
             {name : 'zinger wrap', quantity: 4},
             {name : 'zinger paratha', quantity: 4},

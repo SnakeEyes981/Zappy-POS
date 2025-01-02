@@ -1,28 +1,127 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OrderCard from "./order-card";
 import Itemscard from "./items-card";
 
 
 export default function Menu(params) {
-    const [orderNav, setOrderNav] = useState('dineIn')
+    const [orderNav, setOrderNav] = useState('dine in')
     const [menuNav, setMenuNav] = useState('all')
     const [selectedItems, setSelectedItems] = useState([])
 
-    function injectData(itemDetails, quantity) {
-        setSelectedItems((prevItems) => [...prevItems, {itemDetails, quantity}])
-        console.log(selectedItems)
+    function injectData(itemDetails, quantity, itemStillInCart) {
+        setSelectedItems((prevItems) => {
+            if (!itemStillInCart && quantity === 0) {
+                // Add item if it's not in the cart and quantity is zero
+                return [...prevItems, { itemDetails, quantity }];
+            } else if (!itemStillInCart && quantity > 0) {
+                // Update the quantity if item is already in the cart
+                const itemRef = prevItems.find(item => item.itemDetails.itemName === itemDetails.itemName);
+                if (itemRef) {
+                    // Create a new array with updated quantity for the item
+                    return prevItems.map(item => 
+                        item.itemDetails.itemName === itemDetails.itemName
+                            ? { ...item, quantity }  // Spread the item and update its quantity
+                            : item
+                    );
+                } else {
+                    // If item is not already in the cart, just add it with the new quantity
+                    return [...prevItems, { itemDetails, quantity }];
+                }
+            } else if (itemStillInCart) {
+                // Remove item from the cart if itemStillInCart is true
+                return prevItems.filter(item => item.itemDetails.itemName !== itemDetails.itemName);
+            }
+    
+            return prevItems;  // Return the previous items if no condition matched
+        });
     }
 
 
+
+    const orderBook = [
+        {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time: '01:30 pm', items: [
+            {name : 'grilled cheese burger', quantity: 3},
+            {name : 'chicken patti burger', quantity: 4},
+            {name : 'fries', quantity: 5}
+        ]},
+        {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
+            {name : 'chicken fajita pizza', quantity: 1},
+            {name : 'cheese sandwich', quantity: 3},
+            {name : 'diet coke', quantity: 2}
+        ]},
+        {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time: '02:10 pm', items: [
+            {name : 'lotus pie', quantity: 3},
+            {name : 'zinger wrap', quantity: 4},
+            {name : 'zinger paratha', quantity: 4},
+            {name : 'twister roll', quantity: 4},
+            {name : 'beef burger', quantity: 2},
+            {name : 'cardamom tea', quantity: 5}
+        ]},
+        {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time: '01:30 pm', items: [
+            {name : 'grilled cheese burger', quantity: 3},
+            {name : 'chicken patti burger', quantity: 4},
+            {name : 'fries', quantity: 5}
+        ]},
+        {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
+            {name : 'chicken fajita pizza', quantity: 1},
+            {name : 'cheese sandwich', quantity: 3},
+            {name : 'diet coke', quantity: 2}
+        ]},
+        {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time: '02:10 pm', items: [
+            {name : 'lotus pie', quantity: 3},
+            {name : 'zinger wrap', quantity: 4},
+            {name : 'zinger paratha', quantity: 4},
+            {name : 'twister roll', quantity: 4},
+            {name : 'beef burger', quantity: 2},
+            {name : 'cardamom tea', quantity: 5}
+        ]},
+        {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time: '01:30 pm', items: [
+            {name : 'grilled cheese burger', quantity: 3},
+            {name : 'chicken patti burger', quantity: 4},
+            {name : 'fries', quantity: 5}
+        ]},
+        {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
+            {name : 'chicken fajita pizza', quantity: 1},
+            {name : 'cheese sandwich', quantity: 3},
+            {name : 'diet coke', quantity: 2}
+        ]},
+        {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time: '02:10 pm', items: [
+            {name : 'lotus pie', quantity: 3},
+            {name : 'zinger wrap', quantity: 4},
+            {name : 'zinger paratha', quantity: 4},
+            {name : 'twister roll', quantity: 4},
+            {name : 'beef burger', quantity: 2},
+            {name : 'cardamom tea', quantity: 5}
+        ]},
+        {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time: '01:30 pm', items: [
+            {name : 'grilled cheese burger', quantity: 3},
+            {name : 'chicken patti burger', quantity: 4},
+            {name : 'fries', quantity: 5}
+        ]},
+        {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time: '01:50 pm', items: [
+            {name : 'chicken fajita pizza', quantity: 1},
+            {name : 'cheese sandwich', quantity: 3},
+            {name : 'diet coke', quantity: 2}
+        ]},
+        {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time: '02:10 pm', items: [
+            {name : 'lotus pie', quantity: 3},
+            {name : 'zinger wrap', quantity: 4},
+            {name : 'zinger paratha', quantity: 4},
+            {name : 'twister roll', quantity: 4},
+            {name : 'beef burger', quantity: 2},
+            {name : 'cardamom tea', quantity: 5}
+        ]},
+    ]
+
     const itemsObjectFromDb = [
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Grilled Burger"},
-        {itemCategory:"Burger", itemPrice: 40, itemName: "Grilled Cheese Burger Double Pop"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Patti Burger"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Beef Steak Burger"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"Burger", itemPrice: 20, itemName: "Zappy Special Burger"},
+        {itemCategory:"burger", itemPrice: 20, itemName: "Grilled Burger"},
+        {itemCategory:"burger", itemPrice: 40, itemName: "Grilled Cheese Burger Double Pop"},
+        {itemCategory:"pizza", itemPrice: 20, itemName: "Patti Burger"},
+        {itemCategory:"pizza", itemPrice: 20, itemName: "Beef Steak Burger"},
+        {itemCategory:"wraps", itemPrice: 20, itemName: "Zappy Special Burger"},
+        {itemCategory:"wraps", itemPrice: 20, itemName: "Zappy Special Burger"},
+        {itemCategory:"burger", itemPrice: 20, itemName: "Zappy Special Burger"},
+        {itemCategory:"burger", itemPrice: 20, itemName: "Zappy Special Burger"},
     ]
 
     return (
@@ -35,8 +134,8 @@ export default function Menu(params) {
                         <h3 className="text-nowrap font-extrabold text-xl">Order Line</h3>
                         <div className="ordersNavigation w-full flex items-center justify-between md:flex-row flex-col md:gap-y-0 gap-y-4">
                             <div className="bg-white/75 p-0.5 md:rounded-full rounded-3xl flex gap-x-4 md:flex-row flex-col md:gap-y-0 gap-y-4 md:w-auto w-full">
-                                <button onClick={() => setOrderNav('dineIn')} className={`${orderNav === 'dineIn' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Dine In</button>
-                                <button onClick={() => setOrderNav('takeAway')} className={`${orderNav === 'takeAway' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Take Away</button>
+                                <button onClick={() => setOrderNav('dine in')} className={`${orderNav === 'dine in' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Dine In</button>
+                                <button onClick={() => setOrderNav('take away')} className={`${orderNav === 'take away' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Take Away</button>
                                 <button onClick={() => setOrderNav('delivery')} className={`${orderNav === 'delivery' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Delivery</button>
                             </div>
                             <div className="bg-white/75 p-0.5 rounded-full md:w-auto w-full text-center">
@@ -45,11 +144,10 @@ export default function Menu(params) {
                         </div>
                     </div>
                 </div>
-                <div className="content-center col-span-12 grid grid-cols-4 md:gap-x-4 md:gap-y-0 gap-y-4 overflow-auto md:flex-nowrap custom-scroll">
-                    <OrderCard />
-                    <OrderCard />
-                    <OrderCard />
-                    <OrderCard />
+                <div className="col-span-12 md:gap-x-4 md:gap-y-0 gap-y-4 select-none flex flex-col rounded-xl md:flex-row overflow-y-auto md:flex-nowrap noscroll-bar">
+                    {orderBook.map((order, index) => (
+                        <OrderCard key={index} order={order} category={orderNav}/>
+                    ))}
                 </div>
             </div>
             {/* Menu Navigation */}
@@ -61,7 +159,7 @@ export default function Menu(params) {
                             <button onClick={() => setMenuNav('all')}  className={`${menuNav === 'all' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>All</button>
                             <button onClick={() => setMenuNav('pizza')}  className={`${menuNav === 'pizza' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Pizza</button>
                             <button onClick={() => setMenuNav('wraps')}  className={`${menuNav === 'wraps' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Wraps</button>
-                            <button onClick={() => setMenuNav('burgers')}  className={`${menuNav === 'burgers' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Burgers</button>
+                            <button onClick={() => setMenuNav('burger')}  className={`${menuNav === 'burger' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Burgers</button>
                             <button onClick={() => setMenuNav('appetizers')}  className={`${menuNav === 'appetizers' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Appetizers</button>
                             <button onClick={() => setMenuNav('drinks')}  className={`${menuNav === 'drinks' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Drinks</button>
                             <button onClick={() => setMenuNav('desserts')}  className={`${menuNav === 'desserts' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Desserts</button>
@@ -74,9 +172,9 @@ export default function Menu(params) {
                 </div>
             </div>
             {/* 3rd Container */}
-            <div className="grid grid-cols-12 col-span-12 w-full gap-4 overflow-y-auto max-h-[100vh] lg:max-h-[50vh] content-evenly pr-2 sm:pr-4 custom-scroll">
+            <div className="grid grid-cols-12 col-span-12 w-full gap-4 overflow-y-auto max-h-[100vh] lg:h-[50vh] place-content-start pr-2 sm:pr-4 custom-scroll">
                 {itemsObjectFromDb.map((itemDetails, index) => (
-                    <Itemscard key={index} itemDetails={itemDetails} injectData={injectData}/>
+                    <Itemscard key={index} filter={menuNav} itemDetails={itemDetails} injectData={injectData}/>
                 ))}
             </div>
         </div>
@@ -103,23 +201,16 @@ export default function Menu(params) {
                 </div>
             </div>
             <div className="selected-items flex flex-col gap-y-2 h-[45vh] overflow-auto pr-2 custom-scroll">
-                {selectedItems.map(item => (
+                <h5 className="order-number font-semibold px-2">Order #423234</h5>
+                {selectedItems.map((item, index) => (
                     <>
-                        <h5 className="order-number font-semibold px-2">Order #423234</h5>
-                        <div className="relative flex bg-white rounded-xl sm:flex-row flex-col sm:gap-y-2">
-                            <div className="absolute -top-0.5 -right-0.5 w-6 h-6 p-3 rounded-full inline-flex justify-center items-center bg-stone-900 hover:bg-stone-800  border-4 border-purple-400 cursor-pointer transition">
-                                <i className="fa-solid fa-xmark text-white"></i>
-                            </div>
+                        <div className="flex bg-white rounded-xl sm:flex-row flex-col sm:gap-y-2">
                             <div className="flex sm:basis-[50%] basis-[70%] flex-col gap-y-2 p-2">
-                                <h3 className="font-bold text-center">Grilled Chicken Cheese Burger</h3>
+                                <h3 className="font-bold text-center">{item.itemDetails.itemName}</h3>
                                 <div className="flex items-center gap-x-4 md:w-auto w-full justify-center">
-                                    <button className="shadow-lg counter-control bg-stone-900 rounded-full w-7 h-7 inline-flex justify-center items-center">
-                                        <i className="fa-solid fa-minus text-sm text-white"></i>
-                                    </button>
-                                    <span className="item-counter font-extrabold">3</span>
-                                    <button className="shadow-lg counter-control bg-stone-900 rounded-full w-7 h-7 inline-flex justify-center items-center">
-                                        <i className="fa-solid fa-plus text-sm text-white"></i>
-                                    </button>
+                                    
+                                    <span className="item-counter font-extrabold">{"Qty: " + item.quantity}</span>
+                                    
                                 </div>
                             </div>
                             <div className="item-total bg-stone-900 text-white sm:py-0 py-2 sm:basis-[50%] basis-[30%] rounded-xl inline-flex items-center justify-center font-bold">

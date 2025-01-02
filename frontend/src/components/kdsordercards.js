@@ -1,4 +1,4 @@
-export default function Kdsordercards({order, index, viewOrder}) {
+export default function Kdsordercards({order, viewOrder}) {
     return (
         <div className="col-span-3 md:col-span-1 p-2 bg-stone-900 text-white rounded-xl shadow">
             <div className="flex gap-y-2 flex-col">
