@@ -33,9 +33,9 @@ export default function Kitchen(params) {
     return (
         <>
         <div className="grid grid-cols-4 md:gap-x-4 lg:gap-y-0 gap-y-8">
-            <div className="col-span-4 lg:col-span-3 p-0 pr-1 md:p-2 space-y-4 h-[70vh] lg:h-[86vh] overflow-auto custom-scroll">
-                <div className="flex sm:flex-row flex-col md:gap-y-0 gap-y-2 items-center justify-center">
-                    <h3 className="text-2xl font-black">Orders in Queue</h3>
+            <div className="col-span-4 lg:col-span-3 pr-1 space-y-4 h-[70vh] lg:h-[85vh] overflow-auto custom-scroll">
+                <div className="flex sm:flex-row flex-col md:gap-y-0 gap-y-2 items-center">
+                    <h3 className="text-xl sm:text-2xl font-extrabold">Orders in Queue</h3>
                     {/* <p className="font-bold text-lg">{currentDate.toLocaleDateString()}</p> */}
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -46,12 +46,12 @@ export default function Kitchen(params) {
             </div>
             <div className="col-span-4 lg:col-span-1 bg-stone-900 text-white rounded-xl p-2 shadow-lg">
                 <div className="flex flex-col gap-y-2">
-                    <h3 className="text-2xl font-black text-center w-full">Order Details</h3>
+                    <h3 className="text-2xl font-bold text-center w-full">Order Details</h3>
                     <div className={`${viewOrderId != null ? "visible" : "invisible"} flex justify-between pr-4 font-semibold`}>
                         <h3>{'Order# ' + viewOrderId}</h3>
                         <h5>{viewOrderItems.length + ' Items'}</h5>
                     </div>
-                    <div className="items-list-container overflow-auto h-[64vh] custom-scroll pr-2 space-y-2">
+                    <div className="items-list-container overflow-auto h-[62vh] custom-scroll pr-2 space-y-2">
                         {viewOrderItems.map((item, index) => (
                             <div key={index} className="bg-gradient-to-tl from-teal-400 to-yellow-200 shadow text-stone-900 py-2 px-4 rounded-xl space-y-2">
                                 <h3 className="item-name text-lg font-semibold capitalize">{item.name}</h3>

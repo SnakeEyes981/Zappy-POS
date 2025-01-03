@@ -6,10 +6,10 @@ export default function Itemscard({filter, injectData, itemDetails}) {
     const [counter, setCounter] = useState(0)
     return (
         <>
-        <div className={`${itemDetails.itemCategory === filter || filter === 'all' ? 'block' : 'hidden'} relative col-span-12 sm:col-span-6 lg:col-span-4 bg-white shadow-md rounded-3xl p-1`}>
+        <div className={`${itemDetails.itemCategory === filter || filter === 'all' ? 'block' : 'hidden'} relative col-span-12 sm:col-span-6 lg:col-span-4 bg-stone-100 shadow-md rounded-3xl p-1`}>
             <div className="flex sm:flex-row flex-col lg:justify-start justify-between">
-                <div className="h-32 sm:h-auto sm:basis-[70%] md:basis-[40%] lg:basis-[70%] item-image rounded-3xl overflow-hidden bg-red-500">
-                    <img className="object-cover h-full w-full bg-teal-500 object-center"  src={itemPic} alt="" />
+                <div className="h-32 sm:basis-[70%] md:basis-[40%] lg:basis-[70%] item-image rounded-3xl overflow-hidden bg-red-500">
+                    <img className="object-cover h-full w-full bg-teal-500 object-center"  src={itemDetails.itemSrc} alt="" />
                 </div>
                 <div className="item-info flex flex-col basis-[100%] justify-between sm:px-3 sm:py-1.5 px-2 py-4">
                     <div className="">

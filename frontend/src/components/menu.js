@@ -114,15 +114,38 @@ export default function Menu(params) {
     ]
 
     const itemsObjectFromDb = [
-        {itemCategory:"burger", itemPrice: 20, itemName: "Grilled Burger"},
-        {itemCategory:"burger", itemPrice: 40, itemName: "Grilled Cheese Burger Double Pop"},
-        {itemCategory:"pizza", itemPrice: 20, itemName: "Patti Burger"},
-        {itemCategory:"pizza", itemPrice: 20, itemName: "Beef Steak Burger"},
-        {itemCategory:"wraps", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"wraps", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"burger", itemPrice: 20, itemName: "Zappy Special Burger"},
-        {itemCategory:"burger", itemPrice: 20, itemName: "Zappy Special Burger"},
-    ]
+        { itemCategory: "pizza", itemPrice: 18, itemName: "Margarita Pizza", itemSrc: 'https://cdn.shopify.com/s/files/1/0274/9503/9079/files/20220211142754-margherita-9920_5a73220e-4a1a-4d33-b38f-26e98e3cd986.jpg?v=1723650067' },
+        { itemCategory: "pizza", itemPrice: 25, itemName: "Pepperoni Delight", itemSrc: 'https://i0.wp.com/www.amysrecipebook.com/wp-content/uploads/2021/01/pepperonipizza-8-web.jpg?resize=1024%2C683&ssl=1' },
+        { itemCategory: "pizza", itemPrice: 22, itemName: "BBQ Chicken Pizza", itemSrc: 'https://mediavine-res.cloudinary.com/image/upload/s--_Kf5SiB---/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1685738865/xd52eg0tkuw1avg01bpo.jpg' },
+        { itemCategory: "pizza", itemPrice: 20, itemName: "Veggie Supreme Pizza", itemSrc: 'https://www.twopeasandtheirpod.com/wp-content/uploads/2021/03/Veggie-Pizza-8.jpg' },
+        { itemCategory: "pizza", itemPrice: 23, itemName: "Hawaiian Paradise Pizza", itemSrc: 'https://www.thespruceeats.com/thmb/9KzBgyBZ1LHG8DKLkZ8psYXbm8Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hawaiian-pizza-4691857-hero-01-1a8f6764c70e4113bbf31bd1a73aca2e.jpg' },
+        { itemCategory: "wraps", itemPrice: 15, itemName: "Chicken Caesar Wrap", itemSrc: 'https://rachaelsgoodeats.com/wp-content/uploads/2022/06/240108_chicken-caesar-wrap-13.jpg' },
+        { itemCategory: "wraps", itemPrice: 17, itemName: "Falafel Veggie Wrap", itemSrc: 'https://www.hauteandhealthyliving.com/wp-content/uploads/2022/01/Falafel-Wrap-with-hummus-8.jpg' },
+        { itemCategory: "wraps", itemPrice: 18, itemName: "Grilled Steak Wrap", itemSrc: 'https://emilybites.com/wp-content/uploads/2016/03/Black-and-Blue-Steak-Wraps-6b.jpg' },
+        { itemCategory: "wraps", itemPrice: 16, itemName: "Spicy Chicken Wrap", itemSrc: 'https://sailorbailey.com/wp-content/uploads/2023/04/Cajun-Chicken-Wrap.jpg' },
+        { itemCategory: "wraps", itemPrice: 14, itemName: "Buffalo Chicken Wrap", itemSrc: 'https://www.allrecipes.com/thmb/5BWYRjbPBQu7p7J0YInrHkGnVJU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-188473-Buffalo-Chicken-Wraps-ddmfs-gw-beauty-4x3-adec66cb0d4e46b48ac4f07ee648fec7.jpg' },
+        { itemCategory: "burger", itemPrice: 25, itemName: "Classic Cheeseburger", itemSrc: 'https://rhubarbandcod.com/wp-content/uploads/2022/06/The-Classic-Cheeseburger-1.jpg' },
+        { itemCategory: "burger", itemPrice: 30, itemName: "BBQ Bacon Burger", itemSrc: 'https://s3.amazonaws.com/com.commerceowl.prod/16x9/L/21f61bc3-720d-430a-9261-c485de73fa08.jpeg' },
+        { itemCategory: "burger", itemPrice: 22, itemName: "Mushroom Swiss Burger", itemSrc: 'https://embed.widencdn.net/img/beef/s3ccow03qm/1120x840px/Mushroom-Swiss-Burger-with-Jalapeno-Aioli_FY22_3.tif?keep=c&u=7fueml' },
+        { itemCategory: "burger", itemPrice: 28, itemName: "Double Beef Burger", itemSrc: 'https://www.usa-beef.org/wp-content/uploads/2021/01/shutterstock_1690605409-scaled.jpg' },
+        { itemCategory: "burger", itemPrice: 24, itemName: "Spicy Jalapeño Burger", itemSrc: 'https://wickedkitchen.com/wp-content/uploads/2022/05/Wicked-jalapeno-burger.jpeg' },
+        { itemCategory: "appetizer", itemPrice: 12, itemName: "Mozzarella Sticks", itemSrc: 'https://img.sndimg.com/food/image/upload/f_auto,c_thumb,q_55,w_860,ar_3:2/v1/img/recipes/30/97/7/7GmgWw4TTUCCw7xGKQAP_0S9A6434.jpg' },
+        { itemCategory: "appetizer", itemPrice: 10, itemName: "Garlic Bread", itemSrc: 'https://www.allrecipes.com/thmb/ymrjQ3GFq_Fc7Fu2yfvIj108tcM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/21080-great-garlic-bread-DDMFS-4x3-e1c7b5c79fde4d629a9b7bce6c0702ed.jpg' },
+        { itemCategory: "appetizer", itemPrice: 14, itemName: "Stuffed Jalapeños", itemSrc: 'https://keviniscooking.com/wp-content/uploads/2021/06/Baked-Jalapeno-Poppers-square.jpg' },
+        { itemCategory: "appetizer", itemPrice: 11, itemName: "Chicken Wings", itemSrc: 'https://www.tasteofhome.com/wp-content/uploads/2018/01/Five-Spice-Chicken-Wings_EXPS_TOHFM25_92962_DR_02_07_3b.jpg' },
+        { itemCategory: "appetizer", itemPrice: 13, itemName: "Onion Rings", itemSrc: 'https://kristineskitchenblog.com/wp-content/uploads/2022/03/crispy-air-fryer-onion-rings-recipe-0775.jpg' },
+        { itemCategory: "drink", itemPrice: 5, itemName: "Fresh Lemonade", itemSrc: 'https://www.simplyrecipes.com/thmb/4LFrc9hSMoKErr2WI7tThcnvWwA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Perfect-Lemonade-LEAD-08-B-441ceb568f854bb485dbed79e082bb4a.jpg' },
+        { itemCategory: "drink", itemPrice: 6, itemName: "Iced Tea", itemSrc: 'https://www.thespruceeats.com/thmb/jk3sZ3Jtq2WPnd31DrB-FR1qfs0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/summer-peach-tea-cocktail-recipe-761506-hero-01-f949acc1ed22404da03ce72648412bcf.jpg' },
+        { itemCategory: "drink", itemPrice: 4, itemName: "Coca-Cola", itemSrc: 'https://www.shutterstock.com/image-photo/poznan-pol-aug-13-2019-600nw-2458808941.jpg' },
+        { itemCategory: "drink", itemPrice: 7, itemName: "Sparkling Water", itemSrc: 'https://blog.myfitnesspal.com/wp-content/uploads/2018/07/Is-Flavored-Sparkling-Water-Killing-Your-Weight-Loss-Goals_-1.jpg' },
+        { itemCategory: "drink", itemPrice: 8, itemName: "Mango Smoothie", itemSrc: 'https://www.ambitiouskitchen.com/wp-content/uploads/2019/08/Mango-Pineapple-Coconut-Smoothie-4-725x725.jpg' },
+        { itemCategory: "dessert", itemPrice: 8, itemName: "Chocolate Brownie", itemSrc: 'https://cookingwithbry.com/wp-content/uploads/chocolate-brownies-recipe-735x735.png?_t=1712462733' },
+        { itemCategory: "dessert", itemPrice: 6, itemName: "Vanilla Ice Cream", itemSrc: 'https://www.allrecipes.com/thmb/8_DOwnDZKWRteuSy-bhGudm0N68=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-8314-Vanilla-Ice-Cream-gw-ddmfs-beauty-4x3-b0f065ec1e7346abb82f4b3d2ad9907b.jpg' },
+        { itemCategory: "dessert", itemPrice: 7, itemName: "Apple Pie", itemSrc: 'https://mojo.generalmills.com/api/public/content/RF7rt2cyH0GGi0OySrmZnQ_gmi_hi_res_jpeg.jpeg?v=1b09f892&t=466b54bb264e48b199fc8e83ef1136b4' },
+        { itemCategory: "dessert", itemPrice: 9, itemName: "Tiramisu", itemSrc: 'https://handletheheat.com/wp-content/uploads/2023/12/best-tiramisu-recipe-SQUARE.jpg' },
+        { itemCategory: "dessert", itemPrice: 10, itemName: "Cheesecake", itemSrc: 'https://easydessertrecipes.com/wp-content/uploads/2022/05/Featured-Chocolate-Caramel-Cheesecake-1.jpg' }
+    ];
+    
 
     return (
         <>
@@ -160,9 +183,9 @@ export default function Menu(params) {
                             <button onClick={() => setMenuNav('pizza')}  className={`${menuNav === 'pizza' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Pizza</button>
                             <button onClick={() => setMenuNav('wraps')}  className={`${menuNav === 'wraps' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Wraps</button>
                             <button onClick={() => setMenuNav('burger')}  className={`${menuNav === 'burger' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Burgers</button>
-                            <button onClick={() => setMenuNav('appetizers')}  className={`${menuNav === 'appetizers' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Appetizers</button>
-                            <button onClick={() => setMenuNav('drinks')}  className={`${menuNav === 'drinks' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Drinks</button>
-                            <button onClick={() => setMenuNav('desserts')}  className={`${menuNav === 'desserts' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Desserts</button>
+                            <button onClick={() => setMenuNav('appetizer')}  className={`${menuNav === 'appetizer' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Appetizers</button>
+                            <button onClick={() => setMenuNav('drink')}  className={`${menuNav === 'drink' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Drinks</button>
+                            <button onClick={() => setMenuNav('dessert')}  className={`${menuNav === 'dessert' ? 'bg-cyan-400' : 'hover:bg-cyan-300'} font-medium px-4 py-2 rounded-full transition`}>Desserts</button>
                         </div>
                     </div>
                     <div className="relative group lg:w-auto w-full h-full">
@@ -172,7 +195,7 @@ export default function Menu(params) {
                 </div>
             </div>
             {/* 3rd Container */}
-            <div className="grid grid-cols-12 col-span-12 w-full gap-4 overflow-y-auto max-h-[100vh] lg:h-[50vh] place-content-start pr-2 sm:pr-4 custom-scroll">
+            <div className="grid grid-cols-12 col-span-12 w-full gap-4 overflow-y-auto max-h-[100vh] lg:h-[50vh] rounded-3xl place-content-start pr-2 custom-scroll">
                 {itemsObjectFromDb.map((itemDetails, index) => (
                     <Itemscard key={index} filter={menuNav} itemDetails={itemDetails} injectData={injectData}/>
                 ))}

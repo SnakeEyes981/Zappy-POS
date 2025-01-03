@@ -8,7 +8,7 @@ export default function navbar({role}) {
                     <img className="w-12" src={logo} alt="Logo" />
                 </div>
                 <div className="bg-transparent border-teal-400 border sm:rounded-full rounded-lg flex sm:flex-row flex-col justify-between gap-x-2 md:w-auto w-full">
-                    <NavLink to="/home" className={({isActive}) => `${isActive ? 'navbarLink' : 'navbarLink'} ${role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-solid mr-2 fa-lock"></i>cPanel</NavLink>
+                    <NavLink to="/control-panel" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-solid mr-2 fa-lock"></i>cPanel</NavLink>
                     <NavLink to="/home" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'cashier' || role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-solid mr-2 fa-house-chimney"></i>Home</NavLink>
                     <NavLink to="/orders" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'cashier' || role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-regular mr-2 fa-clipboard"></i>Orders</NavLink>
                     <NavLink to="/kitchen" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'kitchen' || role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-solid mr-2 fa-fire-burner"></i>Kitchen</NavLink>
