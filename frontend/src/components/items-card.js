@@ -1,5 +1,4 @@
 import { useState } from "react";
-import itemPic from "../assets/menu-item.jpg"
 
 export default function Itemscard({filter, injectData, itemDetails}) {
     const [isActive, setIsActive] = useState(false)

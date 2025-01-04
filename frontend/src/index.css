@@ -19,6 +19,13 @@
     .navbarLinkActive {
         @apply rounded-md text-center sm:rounded-full py-0 px-6 text-sky-300 py-1 bg-teal-300 text-stone-900 transition
     }
+    .cPanelLink {
+        @apply p-3 text-start rounded-xl font-bold border border-stone-950 w-full text-black hover:bg-stone-950 hover:text-white transition
+    }
+    .cPanelLinkActive {
+        @apply p-3 text-start rounded-xl font-bold border border-stone-950 w-full text-black bg-stone-950 text-white transition
+    }
+
 }
 
 .background-image {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import OrderCard from "./order-card";
 import Itemscard from "./items-card";
 
