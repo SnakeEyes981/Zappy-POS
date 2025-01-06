@@ -16,7 +16,6 @@ export default function login() {
                       </div>
                       <div className="mt-4 flex justify-between px-2 flex-wrap">
                           <a className="hover:underline text-stone-900 text-xs sm:text-sm font-bold hover:text-white transition" href="#">Forget Password?</a>
-                          <a className="hover:underline text-stone-900 text-xs sm:text-sm font-bold hover:text-white transition" href="#">Register</a>
                       </div>
                   </div>
               </section>

@@ -2,6 +2,7 @@ import { useState } from "react"
 import Navbar from "../components/navbar"
 import EmployeeManagement from "../components/emp_mgmt"
 import TrackSales from "../components/track_sales"
+import CustomizeMenu from "../components/edit_menu"
 export default function ControlPanel(params) {
     const [cPanelNav, setCPanelNav] = useState('emp_mgmt')
 
@@ -22,7 +23,7 @@ export default function ControlPanel(params) {
                 </div>
                 <div className="col-span-12 md:col-span-8 lg:col-span-10 h-screen md:h-[84vh] overflow-hidden">
                         {
-                            cPanelNav === 'none' ? '' : (cPanelNav === 'emp_mgmt' ? <EmployeeManagement /> : (cPanelNav === 'sales' ? <TrackSales /> : (cPanelNav === 'edit_menu' ? <EmployeeManagement /> : (cPanelNav === 'order_analysis' ? <EmployeeManagement /> : null))))
+                            cPanelNav === 'none' ? '' : (cPanelNav === 'emp_mgmt' ? <EmployeeManagement /> : (cPanelNav === 'sales' ? <TrackSales /> : (cPanelNav === 'edit_menu' ? <CustomizeMenu /> : (cPanelNav === 'order_analysis' ? <EmployeeManagement /> : null))))
                         }
                 </div>
             </div>

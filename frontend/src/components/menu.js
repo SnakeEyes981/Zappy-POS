@@ -149,7 +149,7 @@ export default function Menu(params) {
 
     return (
         <>
-        <div className="col-span-12 lg:col-span-9 grid grid-cols-12 gap-y-4 content-between">
+        <div className="col-span-12 lg:col-span-9 grid grid-cols-12 gap-y-4 content-between lg:h-[85vh]">
             {/* 1st Container */}
             <div className="col-span-12 md:gap-y-0 gap-y-4 content-center space-y-2">
                 <div className="w-full">
