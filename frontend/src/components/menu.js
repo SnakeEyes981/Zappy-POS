@@ -141,7 +141,7 @@ export default function Menu() {
                 </div>
             </div>
             {/* Menu Navigation */}
-            <div className="col-span-12 w-full">
+            <div className="col-span-12 w-full space-y-1">
                 <div className="w-full content-center">
                     <div className="heading flex md:gap-x-4 lg:gap-y-0 gap-y-4 items-center justify-between lg:flex-row flex-col">
                         <div className="menuNavigation flex md:items-center justify-between md:gap-x-4 md:flex-row flex-col md:gap-y-0 gap-y-4 w-full">
@@ -159,7 +159,7 @@ export default function Menu() {
                     </div>
                 </div>
                 {/* 3rd Container */}
-                <div className="grid grid-cols-12 col-span-12 w-full gap-2 sm:gap-4 overflow-y-auto max-h-[100vh] lg:h-[52vh] rounded-3xl place-content-start pr-3 sm:p-3 custom-scroll">
+                <div className="grid grid-cols-12 col-span-12 w-full gap-2 sm:gap-4 overflow-y-auto max-h-[100vh] lg:h-[48vh] rounded-3xl place-content-start pr-3 sm:px-3 sm:py-1 custom-scroll">
                     {menuItems.length > 0 ?
                     menuItems.map((itemDetails, index) => (
                         <Itemscard key={index} filter={menuNav} itemDetails={itemDetails} injectData={injectData} reset={resetItems}/>
@@ -170,7 +170,7 @@ export default function Menu() {
                 </div>
             </div>
         </div>
-        <div className="col-span-12 lg:col-span-3 p-2 bg-purple-400 rounded-xl flex flex-col justify-between gap-y-8">
+        <div className="col-span-12 lg:col-span-3 p-2 bg-purple-400 rounded-xl flex flex-col justify-between gap-y-8 h-full">
             <div className="space-y-8">
                 <div className="space-y-2">
                     <div className="flex justify-between items-center text-stone-950">

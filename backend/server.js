@@ -91,7 +91,7 @@ const orderSchema = new mongoose.Schema({
             quantity: { type: Number, required: true },
         }
     ],
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+    createdBy: { type: String, required: true }
 });
 const Order = mongoose.model('Order', orderSchema);
 
@@ -106,7 +106,7 @@ app.get('/users', authenticateToken, async (req, res) => {
     }
 
     try {
-        const users = await User.find({}, 'userName role age'); // Exclude sensitive fields like password
+        const users = await User.find({}, 'userName role age');
         res.status(200).json(users);
     } catch (err) {
         console.error('Error fetching users:', err);
@@ -151,7 +151,6 @@ app.put('/users/:id', authenticateToken, async (req, res) => {
     try {
         const updatedData = { userName, role, age };
 
-        // Only hash the password if it's provided
         if (password) {
             updatedData.password = await bcrypt.hash(password, 10);
         }
@@ -207,8 +206,8 @@ app.post('/login', async (req, res) => {
 
         res.cookie('authToken', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: 'strict', // Prevent CSRF
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
         });
 
         res.status(200).json({ message: 'Login successful', id: user._id, role: user.role });
@@ -220,7 +219,6 @@ app.post('/login', async (req, res) => {
 
 app.post('/logout', authenticateToken, (req, res) => {
     try {
-        // Clear the auth cookie
         res.clearCookie('authToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -297,8 +295,7 @@ app.delete('/menu/:id', authenticateToken, async (req, res) => {
 app.get('/orders', authenticateToken, async (req, res) => {
     try {
         const orders = await Order.find()
-            .populate('items.item', 'itemName itemPrice itemCategory') // Populate item details
-            .populate('createdBy', 'userName role'); // Populate user details
+            .populate('items.item', 'itemName itemPrice itemCategory')
 
         res.status(200).json(orders);
     } catch (err) {
@@ -320,6 +317,11 @@ app.post('/orders', authenticateToken, async (req, res) => {
             return res.status(400).json({ message: 'One or more items are invalid' });
         }
 
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         const newOrder = new Order({
             customerName,
             status,
@@ -327,7 +329,7 @@ app.post('/orders', authenticateToken, async (req, res) => {
             table,
             time,
             items,
-            createdBy: req.user.id, // Associate the order with the logged-in user
+            createdBy: user.userName,
         });
 
         await newOrder.save();

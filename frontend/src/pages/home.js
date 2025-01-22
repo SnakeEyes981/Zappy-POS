@@ -6,7 +6,7 @@ export default function home() {
             <div className="navbar bg-transparent">
                 <Navbar />
             </div>
-            <div className="menu grid grid-cols-12 bg-gradient-to-tl from-teal-400 to-yellow-200 w-full p-3 rounded-xl md:gap-x-5 lg:gap-y-0 gap-y-8">
+            <div className="menu grid grid-cols-12 bg-gradient-to-tl from-teal-400 to-yellow-200 w-full p-3 rounded-xl md:gap-x-5 lg:gap-y-0 gap-y-8 overflow-auto noscroll-bar">
                 <Menu />
             </div>
         </main>
