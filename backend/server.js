@@ -359,6 +359,11 @@ app.patch('/orders/:id/status', authenticateToken, async (req, res) => {
     }
 });
 
+
+app.get('/health', async(req, res) => {
+    res.status(200).json({ message: 'Server is running' });
+})
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
