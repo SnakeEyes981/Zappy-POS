@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import api from "../api/axiosConfig";
 import dayjs from 'dayjs';
 
-export default function TrackSales(params) {
+export default function TrackSales() {
     const [ordersDetails, setOrderDetails] = useState([])
     const [hasRun, setHasRun] = useState(false)
     const [selectedReport, setSelectedReport] = useState('daily')
@@ -9,48 +10,22 @@ export default function TrackSales(params) {
 
 
     useEffect(() => {
-        if(!hasRun){fetchData()}
-        else{fetchData()}
+        if(!hasRun){fetchOrders()}
+        else{fetchOrders()}
     }, [hasRun])
+
     useEffect(() => {
         const result = generateReport(selectedReport);
         setReportData(result);
     }, [selectedReport, ordersDetails]);
 
-    function fetchData() {
-        console.log('RunOnce')
-        setOrderDetails([
-            {orderId: 1002, customerName: 'John Wehlberg', status: 'In Progress', type: 'dine in', table: '2', time_stamp: '2024-01-02T12:00:00', items: [
-                {name : 'chicken fajita pizza', quantity: 1, price: 21},
-                {name : 'cheese sandwich', quantity: 3, price: 11},
-                {name : 'diet coke', quantity: 2, price: 25}
-            ]},
-            {orderId: 1003, customerName: 'Tony Montana', status: 'Pending', type: 'delivery', table: null, time_stamp: '2024-12-201T12:00:00', items: [
-                {name : 'lotus pie', quantity: 3, price: 10},
-                {name : 'zinger wrap', quantity: 4, price: 5},
-                {name : 'zinger paratha', quantity: 4, price: 12},
-            ]},
-            {orderId: 1001, customerName: 'Tom Steve', status: 'Completed', type: 'take away', table: null, time_stamp: '2024-01-05T12:48:00', items: [
-                {name : 'grilled cheese burger', quantity: 3, price: 52},
-                {name : 'chicken patti burger', quantity: 4, price: 10},
-                {name : 'fries', quantity: 5, price: 18}
-            ]},
-            {orderId: 1001, customerName: 'Jerry Mark', status: 'Completed', type: 'take away', table: null, time_stamp: '2024-12-24T12:45:00', items: [
-                {name : 'grilled cheese burger', quantity: 3, price: 42},
-                {name : 'chicken patti burger', quantity: 4, price: 21},
-                {name : 'fries', quantity: 5, price: 52}
-            ]},
-            {orderId: 1001, customerName: 'Jim Berg', status: 'Completed', type: 'take away', table: null, time_stamp: '2025-01-05T12:43:00', items: [
-                {name : 'grilled cheese burger', quantity: 3, price: 19},
-                {name : 'chicken patti burger', quantity: 4, price: 35},
-                {name : 'fries', quantity: 5, price: 11}
-            ]},
-            {orderId: 1001, customerName: 'Jim Berg', status: 'Completed', type: 'take away', table: null, time_stamp: '2025-01-06T12:43:00', items: [
-                {name : 'grilled cheese burger', quantity: 3, price: 19},
-                {name : 'chicken patti burger', quantity: 4, price: 35},
-                {name : 'fries', quantity: 5, price: 11}
-            ]},
-        ]);
+    async function fetchOrders() {
+        try {
+            const response = await api.get('/orders'); // Make GET request
+            setOrderDetails(response.data); // Update orders state
+        } catch (error) {
+            console.error('Error fetching orders:', error.response?.data || error.message);
+        }
     }
 
     function generateReport(duration) {

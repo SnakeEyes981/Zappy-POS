@@ -1,33 +1,69 @@
 import { useEffect, useState } from "react";
+import api from "../api/axiosConfig";
 
 export default function CustomizeMenu(params) {
+    const [isOverlay, setIsOverlay] = useState(false);
+    const [modifyItem, setModifyItem] = useState({ itemId: '', itemName: '', itemCategory: '', itemPrice: '', itemSrc: '' });
+    const [addingNewItem, setAddingNewItem] = useState(true);
+    const [menuItems, setMenuItems] = useState([]);
 
-    const [isOverlay, setIsOverlay] = useState(false)
-    const [modifyItem, setModifyItem] = useState({ itemId: null, itemName: '', itemCategory: '', itemPrice: '', itemSrc: '' })
-    const [addingNewItem, setAddingNewItem] = useState(true)
+    const validateInput = () => {
+        const errors = {};
+
+        if (!modifyItem.itemName.trim()) {
+            errors.itemName = "Name is required.";
+        }
+        if (!modifyItem.itemCategory) {
+            errors.category = "Category is required.";
+        }
+        if (!modifyItem.itemPrice || isNaN(modifyItem.itemPrice) || modifyItem.itemPrice < 1 || modifyItem.itemPrice > 999) {
+            errors.age = "Enter a valid price (1-999).";
+        }
+
+        // Check for duplicate names when adding or updating items
+        const duplicateItem = menuItems.find(item =>
+            item.itemName.toLowerCase() === modifyItem.itemName.toLowerCase() &&
+            item._id !== modifyItem.itemId // Ignore the current item's ID when updating
+        );
+
+        if (duplicateItem) {
+            errors.itemName = "An item with this name already exists.";
+        }
+
+        if (Object.keys(errors).length > 0) {
+            const errorMessages = Object.entries(errors)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join('\n');
+            alert(`Validation Errors:\n${errorMessages}`);
+            return false; // Return false to indicate validation failed
+        }
     
+        return true; // Validation passed
+    };
+
     function handleModifyClick(item) {
-        if (item && item.itemId) {
-          setModifyItem({
-            itemId: item.itemId,
-            itemName: item.itemName,
-            itemCategory: item.itemCategory,
-            itemPrice: item.itemPrice,
-            itemSrc: item.itemSrc,
-          });
-          setAddingNewItem(false);
+        if (item && item._id) {
+            setModifyItem({ itemId: item._id, itemName: item.itemName, itemCategory: item.itemCategory, itemPrice: item.itemPrice, itemSrc: item.itemSrc });
+            setAddingNewItem(false);
         } else {
-          setModifyItem({
-            itemId: null,
-            itemName: "",
-            itemCategory: "",
-            itemPrice: "",
-            itemSrc: "",
-          });
-          setAddingNewItem(true);
+            setModifyItem({ itemId: "", itemName: "", itemCategory: "", itemPrice: "", itemSrc: "" });
+            setAddingNewItem(true);
         }
         setIsOverlay(true);
     }
+
+    async function fetchMenuItems() {
+        try {
+            const response = await api.get('/menu');
+            setMenuItems(response.data);
+        } catch (error) {
+            console.error('Error fetching menu items:', error.response?.data || error.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchMenuItems();
+    }, []);
 
     useEffect(() => {
         if (isOverlay) {
@@ -35,73 +71,55 @@ export default function CustomizeMenu(params) {
         }
     }, [isOverlay]);
 
-    function saveItem(itemDetails) {
-        const { itemName, itemCategory, itemPrice } = itemDetails;
-
-        if (!itemName || itemName.trim() === '') {
-            return { success: false, code: 'ERR_EMPTY_ITEM_NAME', message: 'Item name cannot be empty.' };
+    async function saveItem() {
+        if (!validateInput()) {
+            return;
         }
 
-        if (!itemCategory) {
-            return { success: false, code: 'ERR_EMPTY_ITEM_CATEGORY', message: 'Please select a category.' };
+        const newItem = { itemName: modifyItem.itemName, itemCategory: modifyItem.itemCategory, itemPrice: modifyItem.itemPrice, itemSrc: modifyItem.itemSrc };
+
+        try {
+            if (newItem.itemSrc === '') {
+                newItem.itemSrc = "https://theme-assets.getbento.com/sensei/4f4ca77.sensei/assets/images/catering-item-placeholder-704x520.png";
+            }
+            await api.post('/menu', newItem); // Make POST request
+            alert("Successfully added a new item."); // Success message
+            fetchMenuItems(); // Refresh the menu list
+            setIsOverlay(false);
+        } catch (error) {
+            console.error('Error adding menu item:', error.response?.data || error.message);
         }
-
-        const price = parseFloat(itemPrice);
-        if (isNaN(price) || price < 1 || price > 999) {
-            return { success: false, code: 'ERR_INVALID_ITEM_PRICE', message: 'Price must be between $1 and $999.' };
-        }
-
-
-        console.log('Item saved:', itemDetails);
-        return { success: true, code: 'SUCCESS', message: 'Item saved successfully!' };
     }
 
-
-    function deleteItem(itemDetails) {
-        const { itemName } = itemDetails;
-
-        // 1. Check if itemName is valid (if itemName is empty, return error)
-        if (!itemName || itemName.trim() === '') {
-            return { success: false, code: 'ERR_INVALID_ITEM', message: 'Invalid item. Cannot delete.' };
+    async function updateItem() {
+        if (!validateInput()) {
+            return;
         }
 
-        // Simulate deletion logic (e.g., send delete request to API)
-        console.log('Item deleted:', itemDetails);
-        return { success: true, code: 'SUCCESS', message: 'Item deleted successfully!' };
+        const itemId = modifyItem.itemId;
+        const updatedItem = { itemName: modifyItem.itemName, itemCategory: modifyItem.itemCategory, itemPrice: modifyItem.itemPrice, itemSrc: modifyItem.itemSrc };
+        if (updatedItem.itemSrc === '') {
+            updatedItem.itemSrc = "https://theme-assets.getbento.com/sensei/4f4ca77.sensei/assets/images/catering-item-placeholder-704x520.png";
+        }
+        try {
+            await api.patch(`/menu/${itemId}`, updatedItem); // Make PATCH request
+            fetchMenuItems(); // Refresh the menu list
+            setIsOverlay(false);
+        } catch (error) {
+            console.error('Error updating menu item:', error.response?.data || error.message);
+        }
     }
 
-    const itemsObjectFromDb = [
-        {itemId: 'p1', itemCategory: "pizza", itemPrice: 18, itemName: "Margarita Pizza", itemSrc: 'https://cdn.shopify.com/s/files/1/0274/9503/9079/files/20220211142754-margherita-9920_5a73220e-4a1a-4d33-b38f-26e98e3cd986.jpg?v=1723650067' },
-        {itemId: 'p2', itemCategory: "pizza", itemPrice: 25, itemName: "Pepperoni Delight", itemSrc: 'https://i0.wp.com/www.amysrecipebook.com/wp-content/uploads/2021/01/pepperonipizza-8-web.jpg?resize=1024%2C683&ssl=1' },
-        {itemId: 'p3', itemCategory: "pizza", itemPrice: 22, itemName: "BBQ Chicken Pizza", itemSrc: 'https://mediavine-res.cloudinary.com/image/upload/s--_Kf5SiB---/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1685738865/xd52eg0tkuw1avg01bpo.jpg' },
-        {itemId: 'p4', itemCategory: "pizza", itemPrice: 20, itemName: "Veggie Supreme Pizza", itemSrc: 'https://www.twopeasandtheirpod.com/wp-content/uploads/2021/03/Veggie-Pizza-8.jpg' },
-        {itemId: 'p5', itemCategory: "pizza", itemPrice: 23, itemName: "Hawaiian Paradise Pizza", itemSrc: 'https://www.thespruceeats.com/thmb/9KzBgyBZ1LHG8DKLkZ8psYXbm8Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hawaiian-pizza-4691857-hero-01-1a8f6764c70e4113bbf31bd1a73aca2e.jpg' },
-        {itemId: 'w1', itemCategory: "wraps", itemPrice: 15, itemName: "Chicken Caesar Wrap", itemSrc: 'https://rachaelsgoodeats.com/wp-content/uploads/2022/06/240108_chicken-caesar-wrap-13.jpg' },
-        {itemId: 'w2', itemCategory: "wraps", itemPrice: 17, itemName: "Falafel Veggie Wrap", itemSrc: 'https://www.hauteandhealthyliving.com/wp-content/uploads/2022/01/Falafel-Wrap-with-hummus-8.jpg' },
-        {itemId: 'w3', itemCategory: "wraps", itemPrice: 18, itemName: "Grilled Steak Wrap", itemSrc: 'https://emilybites.com/wp-content/uploads/2016/03/Black-and-Blue-Steak-Wraps-6b.jpg' },
-        {itemId: 'w4', itemCategory: "wraps", itemPrice: 16, itemName: "Spicy Chicken Wrap", itemSrc: 'https://sailorbailey.com/wp-content/uploads/2023/04/Cajun-Chicken-Wrap.jpg' },
-        {itemId: 'w5', itemCategory: "wraps", itemPrice: 14, itemName: "Buffalo Chicken Wrap", itemSrc: 'https://www.allrecipes.com/thmb/5BWYRjbPBQu7p7J0YInrHkGnVJU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-188473-Buffalo-Chicken-Wraps-ddmfs-gw-beauty-4x3-adec66cb0d4e46b48ac4f07ee648fec7.jpg' },
-        {itemId: 'b1', itemCategory: "burger", itemPrice: 25, itemName: "Classic Cheeseburger", itemSrc: 'https://rhubarbandcod.com/wp-content/uploads/2022/06/The-Classic-Cheeseburger-1.jpg' },
-        {itemId: 'b2', itemCategory: "burger", itemPrice: 30, itemName: "BBQ Bacon Burger", itemSrc: 'https://s3.amazonaws.com/com.commerceowl.prod/16x9/L/21f61bc3-720d-430a-9261-c485de73fa08.jpeg' },
-        {itemId: 'b3', itemCategory: "burger", itemPrice: 22, itemName: "Mushroom Swiss Burger", itemSrc: 'https://embed.widencdn.net/img/beef/s3ccow03qm/1120x840px/Mushroom-Swiss-Burger-with-Jalapeno-Aioli_FY22_3.tif?keep=c&u=7fueml' },
-        {itemId: 'b4', itemCategory: "burger", itemPrice: 28, itemName: "Double Beef Burger", itemSrc: 'https://www.usa-beef.org/wp-content/uploads/2021/01/shutterstock_1690605409-scaled.jpg' },
-        {itemId: 'b5', itemCategory: "burger", itemPrice: 24, itemName: "Spicy Jalapeño Burger", itemSrc: 'https://wickedkitchen.com/wp-content/uploads/2022/05/Wicked-jalapeno-burger.jpeg' },
-        {itemId: 'a1', itemCategory: "appetizer", itemPrice: 12, itemName: "Mozzarella Sticks", itemSrc: 'https://img.sndimg.com/food/image/upload/f_auto,c_thumb,q_55,w_860,ar_3:2/v1/img/recipes/30/97/7/7GmgWw4TTUCCw7xGKQAP_0S9A6434.jpg' },
-        {itemId: 'a2', itemCategory: "appetizer", itemPrice: 10, itemName: "Garlic Bread", itemSrc: 'https://www.allrecipes.com/thmb/ymrjQ3GFq_Fc7Fu2yfvIj108tcM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/21080-great-garlic-bread-DDMFS-4x3-e1c7b5c79fde4d629a9b7bce6c0702ed.jpg' },
-        {itemId: 'a3', itemCategory: "appetizer", itemPrice: 14, itemName: "Stuffed Jalapeños", itemSrc: 'https://keviniscooking.com/wp-content/uploads/2021/06/Baked-Jalapeno-Poppers-square.jpg' },
-        {itemId: 'a4', itemCategory: "appetizer", itemPrice: 11, itemName: "Chicken Wings", itemSrc: 'https://www.tasteofhome.com/wp-content/uploads/2018/01/Five-Spice-Chicken-Wings_EXPS_TOHFM25_92962_DR_02_07_3b.jpg' },
-        {itemId: 'a5', itemCategory: "appetizer", itemPrice: 13, itemName: "Onion Rings", itemSrc: 'https://kristineskitchenblog.com/wp-content/uploads/2022/03/crispy-air-fryer-onion-rings-recipe-0775.jpg' },
-        {itemId: 'drk1', itemCategory: "drink", itemPrice: 5, itemName: "Fresh Lemonade", itemSrc: 'https://www.simplyrecipes.com/thmb/4LFrc9hSMoKErr2WI7tThcnvWwA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Perfect-Lemonade-LEAD-08-B-441ceb568f854bb485dbed79e082bb4a.jpg' },
-        {itemId: 'drk2', itemCategory: "drink", itemPrice: 6, itemName: "Iced Tea", itemSrc: 'https://www.thespruceeats.com/thmb/jk3sZ3Jtq2WPnd31DrB-FR1qfs0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/summer-peach-tea-cocktail-recipe-761506-hero-01-f949acc1ed22404da03ce72648412bcf.jpg' },
-        {itemId: 'drk3', itemCategory: "drink", itemPrice: 4, itemName: "Coca-Cola", itemSrc: 'https://www.shutterstock.com/image-photo/poznan-pol-aug-13-2019-600nw-2458808941.jpg' },
-        {itemId: 'drk4', itemCategory: "drink", itemPrice: 7, itemName: "Sparkling Water", itemSrc: 'https://blog.myfitnesspal.com/wp-content/uploads/2018/07/Is-Flavored-Sparkling-Water-Killing-Your-Weight-Loss-Goals_-1.jpg' },
-        {itemId: 'drk5', itemCategory: "drink", itemPrice: 8, itemName: "Mango Smoothie", itemSrc: 'https://www.ambitiouskitchen.com/wp-content/uploads/2019/08/Mango-Pineapple-Coconut-Smoothie-4-725x725.jpg' },
-        {itemId: 'dsrt1', itemCategory: "dessert", itemPrice: 8, itemName: "Chocolate Brownie", itemSrc: 'https://cookingwithbry.com/wp-content/uploads/chocolate-brownies-recipe-735x735.png?_t=1712462733' },
-        {itemId: 'dsrt2', itemCategory: "dessert", itemPrice: 6, itemName: "Vanilla Ice Cream", itemSrc: 'https://www.allrecipes.com/thmb/8_DOwnDZKWRteuSy-bhGudm0N68=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-8314-Vanilla-Ice-Cream-gw-ddmfs-beauty-4x3-b0f065ec1e7346abb82f4b3d2ad9907b.jpg' },
-        {itemId: 'dsrt3', itemCategory: "dessert", itemPrice: 7, itemName: "Apple Pie", itemSrc: 'https://mojo.generalmills.com/api/public/content/RF7rt2cyH0GGi0OySrmZnQ_gmi_hi_res_jpeg.jpeg?v=1b09f892&t=466b54bb264e48b199fc8e83ef1136b4' },
-        {itemId: 'dsrt4', itemCategory: "dessert", itemPrice: 9, itemName: "Tiramisu", itemSrc: 'https://handletheheat.com/wp-content/uploads/2023/12/best-tiramisu-recipe-SQUARE.jpg' },
-        {itemId: 'dsrt5', itemCategory: "dessert", itemPrice: 10, itemName: "Cheesecake", itemSrc: 'https://easydessertrecipes.com/wp-content/uploads/2022/05/Featured-Chocolate-Caramel-Cheesecake-1.jpg' }
-    ];
+    async function deleteMenuItem() {
+        try {
+            await api.delete(`/menu/${modifyItem.itemId}`); // Make DELETE request
+            fetchMenuItems(); // Refresh the menu list
+            setIsOverlay(false);
+        } catch (error) {
+            console.error('Error deleting menu item:', error.response?.data || error.message);
+        }
+    }
+
     return (
         <div className="relative w-full h-screen md:h-[84vh] rounded-xl sm:space-y-2 bg-stone-950 text-white sm:p-4 p-0 overflow-hidden">
             <h5 className="text-3xl font-bold text-center">Customize Menu</h5>
@@ -114,8 +132,8 @@ export default function CustomizeMenu(params) {
                         <button onClick={() => {handleModifyClick(modifyItem); setAddingNewItem(true)}} className="w-12 h-12 rounded-full bg-white border-4 border-stone-950 text-black hover:border-white transition"><i className="fa-solid fa-plus text-lg"></i></button>
                     </div>
                 </div>
-                {itemsObjectFromDb.map((items) => (
-                    <div key={items.itemId} className="relative col-span-12 sm:col-span-6 lg:col-span-4 bg-amber-400 p-1 rounded-xl">
+                {menuItems.map((items) => (
+                    <div key={items._id} className="relative col-span-12 sm:col-span-6 lg:col-span-4 bg-amber-400 p-1 rounded-xl">
                         <div className="flex sm:flex-row flex-col lg:justify-start justify-between">
                             <div className="h-28 sm:h-32 sm:basis-[70%] md:basis-[40%] lg:basis-[70%] item-image rounded-xl overflow-hidden">
                                 <img className="object-cover h-full w-full object-center"  src={items.itemSrc} alt={items.itemName} />
@@ -140,7 +158,7 @@ export default function CustomizeMenu(params) {
             </div>
 
             <div className={`${isOverlay ? '' : 'hidden'} transition absolute inset-y-24 inset-x-2 sm:inset-20 md:inset-12 lg:inset-14 rounded-xl bg-black text-white p-2`} aria-live="assertive">
-                <button onClick={() => {setIsOverlay(false); setModifyItem({itemId: null, itemName: '', itemCategory: '', itemPrice: '', itemSrc: ''})}} className="close inline-flex justify-end w-full">
+                <button onClick={() => {setIsOverlay(false); setModifyItem({itemName: '', itemCategory: '', itemPrice: '', itemSrc: ''})}} className="close inline-flex justify-end w-full">
                     <i className="fa-regular fa-circle-xmark text-white text-2xl"></i>
                 </button>
                 <div className="flex flex-col justify-between h-[80%]">
@@ -173,8 +191,8 @@ export default function CustomizeMenu(params) {
                                 <input className="bg-amber-400 text-black rounded-lg outline-0 px-4 py-1.5 font-bold" type="text" name="imageLink" id="inputForItemSrc"  value={modifyItem.itemSrc} onChange={(e) => setModifyItem(prevState => ({...prevState, itemSrc: e.target.value}))}/>
                             </div>
                             <div className="flex md:flex-row flex-col gap-2 mt-2">
-                                <button onClick={() => {const result = saveItem(modifyItem); alert(result.message)}} className="w-full text-black inline-flex items-center justify-between px-6 bg-green-500 hover:bg-green-400 py-1 lg:py-2 outline-0 font-medium rounded-lg">Save Changes<i className="fa-solid fa-save"></i></button>
-                                {addingNewItem ? null : (<button onClick={() => deleteItem(modifyItem)} className="w-full text-white inline-flex items-center justify-between px-6 bg-red-600 hover:bg-red-500 py-1 lg:py-2 outline-0 font-medium rounded-lg">Delete this Item <i className="fa-solid fa-trash-can"></i></button>)}
+                                <button onClick={addingNewItem ? () => {saveItem()} : () => {updateItem()}} className="w-full text-black inline-flex items-center justify-between px-6 bg-green-500 hover:bg-green-400 py-1 lg:py-2 outline-0 font-medium rounded-lg">{addingNewItem ? "Add Item" : "Save Changes"}<i className="fa-solid fa-save"></i></button>
+                                {addingNewItem ? null : (<button onClick={() => {deleteMenuItem()}} className="w-full text-white inline-flex items-center justify-between px-6 bg-red-600 hover:bg-red-500 py-1 lg:py-2 outline-0 font-medium rounded-lg">Delete this Item <i className="fa-solid fa-trash-can"></i></button>)}
                             </div>
                         </div>
                     </div>

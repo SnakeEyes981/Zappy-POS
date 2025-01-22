@@ -1,6 +1,16 @@
-import logo from "../assets/Artboard 1.png"
-import { NavLink } from "react-router-dom"
-export default function navbar({role}) {
+import logo from "../assets/Artboard 1.png";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+
+export default function Navbar() {
+    const { auth, logout } = useAuth();
+    const { role } = auth;
+
+    function dropdown() {
+        const dropdownBtn = document.getElementById("dropdownBtn");
+        dropdownBtn.style.visibility = dropdownBtn.style.visibility === "hidden" ? "visible" : "hidden";
+    }
+    
     return (
         <>
             <nav className="text-white flex md:flex-row flex-col md:gap-y-0 gap-y-4 justify-between items-center">
@@ -13,8 +23,9 @@ export default function navbar({role}) {
                     <NavLink to="/orders" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'cashier' || role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-regular mr-2 fa-clipboard"></i>Orders</NavLink>
                     <NavLink to="/kitchen" className={({isActive}) => `${isActive ? 'navbarLinkActive' : 'navbarLink'} ${role === 'kitchen' || role === 'admin' ? 'block' : 'hidden'}`}><i className="fa-solid mr-2 fa-fire-burner"></i>Kitchen</NavLink>
                 </div>
-                <div className="bg-stone-800 border-stone-600 border sm:rounded-full rounded-lg md:w-auto w-full">
-                    <button className="navbarLink w-full"><i className="fa-solid mr-2 fa-user"></i>Account</button>
+                <div className="relative bg-transparent border-teal-400 border sm:rounded-full rounded-lg md:w-auto w-full">
+                    <button onClick={() => {dropdown()}} className="navbarLink w-full"><i className="fa-solid mr-2 fa-user"></i>Account</button>
+                    <button id="dropdownBtn" onClick={logout} className="invisible py-2 z-10 absolute inset-x-2 top-10 bg-amber-300 text-black rounded-full">Logout</button>
                 </div>
             </nav>
         </>

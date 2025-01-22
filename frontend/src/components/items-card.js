@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Itemscard({filter, injectData, itemDetails}) {
-    const [isActive, setIsActive] = useState(false)
-    const [counter, setCounter] = useState(0)
+export default function Itemscard({filter, injectData, itemDetails, reset}) {
+    const [isActive, setIsActive] = useState(false);
+    const [counter, setCounter] = useState(0);
+    useEffect(() => {
+        setIsActive(false);
+        setCounter(0);
+    }, [reset]);
     return (
-        <>
-        <div className={`${itemDetails.itemCategory === filter || filter === 'all' ? 'block' : 'hidden'} relative col-span-12 sm:col-span-6 lg:col-span-4 bg-stone-100 shadow-md rounded-3xl p-1`}>
+        <div key={itemDetails._id} className={`${itemDetails.itemCategory === filter || filter === 'all' ? 'block' : 'hidden'} relative col-span-12 sm:col-span-6 lg:col-span-4 bg-stone-100 shadow-md rounded-3xl p-1`}>
             <div className="flex sm:flex-row flex-col lg:justify-start justify-between">
                 <div className="h-32 sm:basis-[70%] md:basis-[40%] lg:basis-[70%] item-image rounded-3xl overflow-hidden bg-red-500">
                     <img className="object-cover h-full w-full bg-teal-500 object-center"  src={itemDetails.itemSrc} alt="" />
@@ -33,6 +36,5 @@ export default function Itemscard({filter, injectData, itemDetails}) {
                 <button onClick={() => {setIsActive(!isActive); setCounter(isActive ? 0 : 1); injectData(itemDetails, counter+1, isActive)}} className={`${isActive ? 'rotate-45' : 'rotate-0'} w-10 h-10 rounded-full bg-stone-950 hover:bg-stone-800 transition text-white`}><i className="fa-solid fa-plus text-xl"></i></button>
             </div>
         </div>
-        </>
     );
 };
