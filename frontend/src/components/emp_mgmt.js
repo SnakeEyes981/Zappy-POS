@@ -5,7 +5,6 @@ function EmployeeManagement() {
     const [isOverlay, setIsOverlay] = useState(false)
     const [modifyUser, setModifyUser] = useState({ userId: '', userName: '', role: '', age: '', password: '' })
     const [ userData, setUserData ] = useState([]);
-    const [ validationErrors, setValidationErrors ] = useState({});
     
     const fetchUsers = async () => {
         try {
@@ -36,15 +35,21 @@ function EmployeeManagement() {
           errors.password = "Password must be at least 6 characters long.";
         }
     
-        setValidationErrors(errors);
-        return Object.keys(errors).length === 0; // Return true if no errors
+        if (Object.keys(errors).length > 0) {
+            const errorMessages = Object.entries(errors)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join('\n');
+            alert(`Validation Errors:\n${errorMessages}`);
+            return false;
+        }
+    
+        return true;
       };
 
 
 
     async function saveUser() {
         if(!validateInput()){
-            alert(validationErrors);
             return
         }
     
@@ -56,15 +61,19 @@ function EmployeeManagement() {
         };
     
         try {
-            await api.post('/register', newUser); // POST request to add a new user
-            fetchUsers(); // Refresh the user list
-            closeOverlay(); // Reset and close overlay
+            await api.post('/register', newUser);
+            fetchUsers();
+            closeOverlay();
         } catch (err) {
             console.error('Error saving user:', err.response?.data || err.message);
         }
     }
 
     async function updateUser(userId) {
+        if(!validateInput()){
+            return
+        }
+        
         const updatedUser = {
             userName: modifyUser.userName,
             role: modifyUser.role,
@@ -73,8 +82,8 @@ function EmployeeManagement() {
         };
         console.log(modifyUser.userId + userId)
         try {
-            await api.put(`/users/${userId}`, updatedUser); // PUT request to update the user
-            fetchUsers(); // Refresh the user list
+            await api.put(`/users/${userId}`, updatedUser);
+            fetchUsers();
             closeOverlay();
         } catch (err) {
             console.error('Error updating user:', err.response?.data || err.message);
@@ -83,9 +92,9 @@ function EmployeeManagement() {
 
     async function deleteUser(userId) {
         try {
-            const response = await api.delete(`/users/${userId}`); // Make DELETE request
-            console.log(response.data.message); // Success message
-            fetchUsers(); // Refresh the user list
+            const response = await api.delete(`/users/${userId}`);
+            console.log(response.data.message);
+            fetchUsers();
             closeOverlay();
         } catch (error) {
             console.error('Error deleting user:', error.response?.data || error.message);

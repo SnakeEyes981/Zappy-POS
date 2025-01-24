@@ -20,10 +20,10 @@ export default function CustomizeMenu(params) {
             errors.age = "Enter a valid price (1-999).";
         }
 
-        // Check for duplicate names when adding or updating items
+
         const duplicateItem = menuItems.find(item =>
             item.itemName.toLowerCase() === modifyItem.itemName.toLowerCase() &&
-            item._id !== modifyItem.itemId // Ignore the current item's ID when updating
+            item._id !== modifyItem.itemId
         );
 
         if (duplicateItem) {
@@ -35,10 +35,10 @@ export default function CustomizeMenu(params) {
                 .map(([key, value]) => `${key}: ${value}`)
                 .join('\n');
             alert(`Validation Errors:\n${errorMessages}`);
-            return false; // Return false to indicate validation failed
+            return false;
         }
     
-        return true; // Validation passed
+        return true;
     };
 
     function handleModifyClick(item) {
@@ -82,9 +82,9 @@ export default function CustomizeMenu(params) {
             if (newItem.itemSrc === '') {
                 newItem.itemSrc = "https://theme-assets.getbento.com/sensei/4f4ca77.sensei/assets/images/catering-item-placeholder-704x520.png";
             }
-            await api.post('/menu', newItem); // Make POST request
-            alert("Successfully added a new item."); // Success message
-            fetchMenuItems(); // Refresh the menu list
+            await api.post('/menu', newItem);
+            alert("Successfully added a new item.");
+            fetchMenuItems();
             setIsOverlay(false);
         } catch (error) {
             console.error('Error adding menu item:', error.response?.data || error.message);
@@ -103,7 +103,7 @@ export default function CustomizeMenu(params) {
         }
         try {
             await api.patch(`/menu/${itemId}`, updatedItem); // Make PATCH request
-            fetchMenuItems(); // Refresh the menu list
+            fetchMenuItems();
             setIsOverlay(false);
         } catch (error) {
             console.error('Error updating menu item:', error.response?.data || error.message);
@@ -113,7 +113,7 @@ export default function CustomizeMenu(params) {
     async function deleteMenuItem() {
         try {
             await api.delete(`/menu/${modifyItem.itemId}`); // Make DELETE request
-            fetchMenuItems(); // Refresh the menu list
+            fetchMenuItems();
             setIsOverlay(false);
         } catch (error) {
             console.error('Error deleting menu item:', error.response?.data || error.message);

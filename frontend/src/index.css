@@ -40,31 +40,31 @@
 /* Scroll Bar */
 
 ::-webkit-scrollbar {
-width: 4px;   /* Horizontal scrollbar thickness */
-height: 4px;  /* Vertical scrollbar thickness */
+width: 4px;
+height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-background: #f1f1f1;  /* Scrollbar color */
+background: #f1f1f1;
 border-radius: 999px;
 }
 
 ::-webkit-scrollbar-track {
-background: transparent;  /* Scrollbar track color */
+background: transparent;
 }
 
 .custom-scroll::-webkit-scrollbar {
-width: 4px;   /* Horizontal scrollbar thickness */
-height: 4px;  /* Vertical scrollbar thickness */
+width: 4px;
+height: 4px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-background: #0c0a09;  /* Scrollbar color */
+background: #0c0a09;
 border-radius: 999px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-background: transparent;  /* Scrollbar track color */
+background: transparent;
 }
 
 .noscroll-bar::-webkit-scrollbar {
