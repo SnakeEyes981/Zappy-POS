@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 require('dotenv').config();
 
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://zappy-api.vercel.app/',
     credentials: true,
 }));
 
@@ -368,5 +368,5 @@ app.get('/health', async(req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on PORT: ${PORT}`);
 });
