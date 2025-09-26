@@ -16,7 +16,7 @@ export default function App() {
 
     const checkServerHealth = async () => {
         try {
-            await api.get('http://localhost:5000/health'); // Replace with your API health endpoint
+            await api.get('https://zappy-api.vercel.app'); // Replace with your API health endpoint
             setServerStatus('online');
         } catch (err) {
             console.error('Server health check failed:', err.message);
